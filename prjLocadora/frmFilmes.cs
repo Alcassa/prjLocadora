@@ -12,12 +12,18 @@ namespace prjLocadora
 {
     public partial class frmFilmes : Form
     {
+      
         public frmFilmes()
         {
             InitializeComponent();
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmFilmes_Load(object sender, EventArgs e)
         {
 
         }

@@ -282,6 +282,7 @@ namespace prjLocadora
             this.Name = "frmFilmes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Filmes";
+            this.Load += new System.EventHandler(this.frmFilmes_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
