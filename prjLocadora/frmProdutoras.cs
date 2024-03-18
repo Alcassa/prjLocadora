@@ -13,7 +13,7 @@ namespace prjLocadora
 {
     public partial class frmProdutoras : Form
     {
-        String connectonString = @"Server=darnassus\motorhead;Database=db_230910;User Id=230910;Password=12345678";
+        String connectionString = @"Server=darnassus\motorhead;Database=db_230910;User Id=230910;Password=12345678";
         bool novo;
         public frmProdutoras()
         {
@@ -27,6 +27,29 @@ namespace prjLocadora
             txtEmailProd.Enabled = false;
             txtProd.Enabled = false;
             txtTelProd.Enabled = false;
+            string sql = "SELECT *FROM tblProdutora";
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.Text;
+            SqlDataReader reader;
+            con.Open();
+            try
+            {
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    txtCodProd.Text = reader[0].ToString();
+                    txtProd.Text = reader[1].ToString();
+                    txtTelProd.Text = reader[2].ToString();
+                    txtEmailProd.Text = reader[3].ToString();
+                }
+                    
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.ToString());
+            }
+            finally { con.Close(); }
         }
 
         private void btnNovo_Click(object sender, EventArgs e)
@@ -54,7 +77,7 @@ namespace prjLocadora
                 string sql = "INSERT INTO tblProdutora(nomeProd,telProd,emailProd)  " +
                     $"VALUES('{txtProd.Text}', '{txtProd.Text}' ,'{txtEmailProd.Text}')";
                 // MessageBox.Show(sql);
-                var con = new SqlConnection(connectonString);
+                var con = new SqlConnection(connectionString);
                 var cmd = new SqlCommand(sql, con);
                 cmd.CommandType = CommandType.Text;
                 con.Open();
@@ -73,7 +96,67 @@ namespace prjLocadora
                 {
                     con.Close();
                 }
-            } 
+
+            }
+            else
+            {
+                string sql = $"UPDATE tblProdutora SET nomeProd='{txtProd.Text}',emailProd='{txtEmailProd.Text}',telProd='{txtTelProd.Text}' WHERE codProd={txtCodProd.Text}";
+                var con = new SqlConnection(connectionString);
+                var cmd = new SqlCommand(sql, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                try
+                {
+                    int i = cmd.ExecuteNonQuery();
+                    if (i > 0)
+                    {
+                        MessageBox.Show("Produtora alterada com sucesso!!!");
+                    }
+                }catch(Exception ex)
+                {
+                    MessageBox.Show("Erro :" + ex.ToString());
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            string sql = $"DELETE FROM tblProdutora WHERE" +
+                $" codProd={txtCodProd.Text}";
+            var con = new SqlConnection(connectionString);
+            var cmd = new SqlCommand(sql, con);
+            cmd.CommandType = CommandType.Text;
+            con.Open();
+            try
+            {
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    MessageBox.Show("Excluido com sucesso");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro :" + ex.ToString());
+            }
+            finally { con.Close(); } 
+        }
+
+        private void btnAlterar_Click(object sender, EventArgs e)
+        {
+            novo = false;
+            btnNovo.Enabled = false;
+            btnExcluir.Enabled = false;
+            btnSalvar.Enabled = true;
+            txtProd.Enabled = true;
+            txtEmailProd.Enabled = true;
+            txtTelProd.Enabled = true;
+            
         }
     }
 }
