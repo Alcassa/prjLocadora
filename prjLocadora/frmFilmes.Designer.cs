@@ -97,6 +97,13 @@ namespace prjLocadora
             // cbbGenero
             // 
             this.cbbGenero.FormattingEnabled = true;
+            this.cbbGenero.Items.AddRange(new object[] {
+            "Suspense",
+            "Comédia",
+            "Terror",
+            "Drama",
+            "Romance",
+            "Ação"});
             this.cbbGenero.Location = new System.Drawing.Point(81, 25);
             this.cbbGenero.Name = "cbbGenero";
             this.cbbGenero.Size = new System.Drawing.Size(121, 28);
@@ -211,6 +218,7 @@ namespace prjLocadora
             this.btnProximo.TabIndex = 3;
             this.btnProximo.Text = ">";
             this.btnProximo.UseVisualStyleBackColor = true;
+            this.btnProximo.Click += new System.EventHandler(this.btnProximo_Click);
             // 
             // btnUltimo
             // 
